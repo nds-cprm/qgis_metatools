@@ -26,12 +26,23 @@
 #******************************************************************************
 
 from PyQt4 import uic
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtXml import *
+from PyQt4.QtCore import SIGNAL, Qt, QFile, QIODevice, QSettings, QTextStream, QModelIndex
+from PyQt4.QtGui import QApplication, QDialog, QMessageBox, QDialogButtonBox, QPushButton, QTableWidgetItem
+from PyQt4.QtXml import QDomDocument
 
-from qgis.core import *
-from qgis.gui import *
+# from past.builtins import unicode
+# Traceback (most recent call last):
+#   File "<stdin>", line 1, in <module>
+#   File "/usr/lib/python3/dist-packages/past/builtins/__init__.py", line 54, in <module>
+#     from past.builtins.misc import (apply, chr, cmp, execfile, intern, oct,
+#   File "/usr/lib/python3/dist-packages/past/builtins/misc.py", line 45, in <module>
+#     from imp import reload
+# ModuleNotFoundError: No module named 'imp'
+# Change imp module to importlib
+from past.builtins import unicode
+
+# from qgis.core import *
+# from qgis.gui import *
 
 import os, sys
 from dom_model import DomModel, FilterDomModel

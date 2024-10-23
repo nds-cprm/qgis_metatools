@@ -25,11 +25,13 @@
 #
 #******************************************************************************
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt4.QtCore import QCoreApplication, QDir, QFileInfo, QLocale, QSettings, QTranslator, QUrl, qVersion
+from PyQt4.QtGui import QIcon, QMessageBox, QAction, QDialogButtonBox, QFileDialog
 
-from qgis.core import *
-from qgis.gui import *
+# from qgis.core import *
+from qgis.gui import QGis
+
+from past.builtins import unicode
 
 import os, sys
 
