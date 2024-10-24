@@ -26,11 +26,11 @@
 #******************************************************************************
 
 from PyQt4 import uic
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt4.QtCore import QDir,QSettings
+from PyQt4.QtGui import QDialog,QFileDialog
 
-from qgis.core import *
-from qgis.gui import *
+#from qgis.core import 
+#from qgis.gui import 
 
 import os
 

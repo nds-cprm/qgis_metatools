@@ -26,13 +26,15 @@
 #******************************************************************************
 
 from PyQt4 import uic
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtXml import *
-from PyQt4.QtXmlPatterns import *
+from PyQt4.QtCore import QCoreApplication,QDir,QFile,QSettings,Qt
+from PyQt4.QtGui import QDialog, QPushButton, QDialogButtonBox, QListWidgetItem, QAbstractItemView, QFileDialog, QMessageBox
+from PyQt4.QtXml import QDomDocument
+#from PyQt4.QtXmlPatterns import 
 
-from qgis.core import *
-from qgis.gui import *
+#from qgis.core import 
+#from qgis.gui import 
+
+from past.builtins import unicode
 
 import sys, os, codecs, shutil
 

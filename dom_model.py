@@ -23,9 +23,9 @@
 **
 ***************************************************************************"""
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtXml import *
+from PyQt4.QtCore import QAbstractItemModel,QModelIndex,QSortFilterProxyModel,Qt,SIGNAL
+#from PyQt4.QtGui import 
+from PyQt4.QtXml import QDomNode
 
 def getPath(node):
   path = ""

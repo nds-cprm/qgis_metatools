@@ -25,9 +25,11 @@
 #
 #******************************************************************************
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from PyQt4.QtXml import *
+#from PyQt4.QtGui import 
+from PyQt4.QtCore import QFile
+from PyQt4.QtXml import QDomDocument
+
+from past.builtins import unicode
 
 import os, codecs
 

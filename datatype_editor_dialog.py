@@ -26,13 +26,16 @@
 #******************************************************************************
 
 from PyQt4 import uic
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtXml import *
-from PyQt4.QtXmlPatterns  import *
+from PyQt4.QtCore import PYQT_VERSION_STR
+from PyQt4.QtGui import QDialog,QDialogButtonBox,QMessageBox,QDoubleValidator,QIntValidator, QInputDialog, QLineEdit
+#from PyQt4.QtXml import 
+#from PyQt4.QtXmlPatterns  import 
 
-from qgis.core import *
-from qgis.gui import *
+#from qgis.core import 
+#from qgis.gui import 
+
+from past.builtins import unicode
+from workflow_editor_dialog import WorkflowEditorDialog
 
 import os, sys
 

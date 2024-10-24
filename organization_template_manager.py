@@ -25,9 +25,9 @@
 #
 #******************************************************************************
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from PyQt4.QtXml import *
+#from PyQt4.QtGui import 
+from PyQt4.QtCore import QFile,QTextStream
+from PyQt4.QtXml import QDomDocument
 
 class OrganizationTemplate:
   def __init__(self, name=None, deliveryPoint=None, city=None, adminArea=None, \

@@ -24,10 +24,12 @@
 # MA 02111-1307, USA.
 #
 #******************************************************************************
-from qgis.core import *
+from qgis.core import QgsMapLayer, QgsDataSourceURI
 from os import path, tempnam, remove
 import codecs
 import uuid
+
+from past.builtins import unicode
 
 NO_PSYCOPG2 = False
 try:

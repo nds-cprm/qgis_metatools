@@ -25,12 +25,14 @@
 #
 #******************************************************************************
 
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtXml import *
+from PyQt4.QtCore import QFile,QSettings,QTextStream
+from PyQt4.QtGui import QPixmap
+from PyQt4.QtXml import QDomNode, QDomDocument
 
-from qgis.core import *
-from qgis.gui import *
+from qgis.core import QgsMapLayerRegistry, QgsMapLayer, QgsRasterLayer
+#from qgis.gui import
+
+from past.builtins import unicode
 
 import os
 

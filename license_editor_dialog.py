@@ -26,13 +26,15 @@
 #******************************************************************************
 
 from PyQt4 import uic
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyQt4.QtXml import *
-from PyQt4.QtXmlPatterns  import *
+#from PyQt4.QtCore import 
+from PyQt4.QtGui import QDialog,QDialogButtonBox,QMessageBox,QDialog,QDialogButtonBox,QMessageBox
+#from PyQt4.QtXml import 
+#from PyQt4.QtXmlPatterns  import 
 
-from qgis.core import *
-from qgis.gui import *
+#from qgis.core import 
+#from qgis.gui import 
+
+from past.builtins import unicode
 
 import os, sys
 
