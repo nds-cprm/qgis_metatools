@@ -25,20 +25,22 @@
 #
 #******************************************************************************
 
-from PyQt4 import uic
+from __future__ import absolute_import
+from builtins import str
+from qgis.PyQt import uic
 #from PyQt4.QtCore import 
-from PyQt4.QtGui import QDialog,QDialogButtonBox,QMessageBox
+from qgis.PyQt.QtWidgets import QDialog, QDialogButtonBox, QMessageBox
 #from PyQt4.QtXml import 
 #from PyQt4.QtXmlPatterns import
 
 #from qgis.core import 
 #from qgis.gui import
 
-from past.builtins import unicode
+from past.builtins import str
 
 import os, sys
 
-from workflow_template_manager import WorkflowTemplateManager, WorkflowTemplate
+from .workflow_template_manager import WorkflowTemplateManager, WorkflowTemplate
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), 'ui/workflow_editor.ui'))
 
@@ -131,7 +133,7 @@ class WorkflowEditorDialog(QDialog, FORM_CLASS):
     except:
       QMessageBox.warning(self,
                           self.tr("Manage workflows"),
-                          self.tr("Template can't be saved: ") + unicode(sys.exc_info()[1])
+                          self.tr("Template can't be saved: ") + str(sys.exc_info()[1])
                          )
       return
 

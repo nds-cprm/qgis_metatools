@@ -26,8 +26,10 @@
 #
 #******************************************************************************
 
-class MetaInfoStandard:
-  UNKNOWN, ISO19115, FGDC, DC = range(4)
+from builtins import range
+from builtins import object
+class MetaInfoStandard(object):
+  UNKNOWN, ISO19115, FGDC, DC = list(range(4))
 
   @staticmethod
   def tryDetermineStandard(metaProvider):

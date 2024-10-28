@@ -25,27 +25,30 @@
 #
 #******************************************************************************
 
-from PyQt4.QtCore import QFile,QSettings,QTextStream
-from PyQt4.QtGui import QPixmap
-from PyQt4.QtXml import QDomNode, QDomDocument
+from __future__ import absolute_import
+from builtins import str
+from builtins import range
+from qgis.PyQt.QtCore import QFile, QSettings, QTextStream
+from qgis.PyQt.QtGui import QPixmap
+from qgis.PyQt.QtXml import QDomDocument
 
 from qgis.core import QgsMapLayerRegistry, QgsMapLayer, QgsRasterLayer
 #from qgis.gui import
 
-from past.builtins import unicode
+from past.builtins import str
 
 import os
 
 from osgeo import gdal, ogr, osr
 
-from metadata_provider import MetadataProvider
+from .metadata_provider import MetadataProvider
 
 META_EXT = '.xml'
 PREVIEW_SUFFIX = '_preview'
 
 def getMetafilePath(layer):
   #not standard implementation in original plugin
-  originalFilePath = unicode(layer.source())
+  originalFilePath = str(layer.source())
   #originalFileName = os.path.splitext(originalFilePath)
   #metaFilePath = originalFileName[0] + META_EXT
   metaFilePath = originalFilePath + META_EXT
@@ -55,7 +58,7 @@ def previewPathFromLayerPath(layerPath):
   settings = QSettings("NextGIS", "metatools")
   format_preview = settings.value("preview/format", "jpg")
 
-  originalFileName = os.path.splitext(unicode(layerPath))
+  originalFileName = os.path.splitext(str(layerPath))
   metaFilePath = originalFileName[0] + PREVIEW_SUFFIX + '.' + format_preview
   return metaFilePath
 
@@ -69,7 +72,7 @@ def mdPathFromLayerPath(layerPath):
 def getSupportedLayerNames():
   layermap = QgsMapLayerRegistry.instance().mapLayers()
   layerList = []
-  for name, layer in layermap.iteritems():
+  for name, layer in layermap.items():
     if MetadataProvider.IsLayerSupport(layer)[0]:
       layerList.append(layer.name())
   return layerList
@@ -77,14 +80,14 @@ def getSupportedLayerNames():
 def getSupportedLayers():
   layermap = QgsMapLayerRegistry.instance().mapLayers()
   layers = []
-  for name, layer in layermap.iteritems():
+  for name, layer in layermap.items():
     if MetadataProvider.IsLayerSupport(layer)[0]:
       layers.append((layer.name(), layer.source()))
   return layers
 
 def getRasterLayerByName(layerName):
   layermap = QgsMapLayerRegistry.instance().mapLayers()
-  for name, layer in layermap.iteritems():
+  for name, layer in layermap.items():
     if layer.type() == QgsMapLayer.RasterLayer:
       if layer.providerType() != "gdal":
         continue
@@ -94,7 +97,7 @@ def getRasterLayerByName(layerName):
 
 def getRasterLayerByPath(layerPath):
   layermap = QgsMapLayerRegistry.instance().mapLayers()
-  for name, layer in layermap.iteritems():
+  for name, layer in layermap.items():
     if layer.type() == QgsMapLayer.RasterLayer:
       if layer.providerType() != "gdal":
         continue
@@ -105,7 +108,7 @@ def getRasterLayerByPath(layerPath):
 # helper functions for raster metadata
 
 def getGeneralRasterInfo(path):
-  raster = gdal.Open(unicode(path).encode("utf8"))
+  raster = gdal.Open(str(path).encode("utf8"))
   bands = raster.RasterCount
 
   width = raster.RasterXSize
@@ -140,7 +143,7 @@ def getGeneralRasterInfo(path):
   return bands, [xMin, yMin, xMax, yMax]
 
 def getBandInfo(path, bandNumber):
-  raster = gdal.Open(unicode(path).encode("utf8"))
+  raster = gdal.Open(str(path).encode("utf8"))
   band = raster.GetRasterBand(bandNumber)
 
   min_value, max_value = band.ComputeRasterMinMax()
@@ -162,7 +165,7 @@ def getBandInfo(path, bandNumber):
 
 # helper functions for vector metadata
 def getGeneralVectorInfo(path):
-  ogrDataSource = ogr.Open(unicode(path).encode("utf8"))
+  ogrDataSource = ogr.Open(str(path).encode("utf8"))
   layer = ogrDataSource[0]
 
   #get extent and layer SR

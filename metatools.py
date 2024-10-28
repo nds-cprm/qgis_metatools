@@ -25,34 +25,38 @@
 #
 #******************************************************************************
 
-from PyQt4.QtCore import QCoreApplication, QDir, QFileInfo, QLocale, QSettings, QTranslator, QUrl, qVersion
-from PyQt4.QtGui import QIcon, QMessageBox, QAction, QDialogButtonBox, QFileDialog
+from __future__ import absolute_import
+from builtins import str
+from builtins import object
+from qgis.PyQt.QtCore import QCoreApplication, QDir, QFileInfo, QLocale, QSettings, QTranslator, QUrl, qVersion
+from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtWidgets import QMessageBox, QAction, QDialogButtonBox, QFileDialog
 
-# from qgis.core import *
-from qgis.gui import QGis
+from qgis.core import Qgis
+#from qgis.gui import QGis
 
-from past.builtins import unicode
+from past.builtins import str
 
 import os, sys
 
-from metatoolssettings import MetatoolsSettings
-from standard import MetaInfoStandard
-from error_handler import ErrorHandler
-from metadata_provider import MetadataProvider
-import resources
+from .metatoolssettings import MetatoolsSettings
+from .standard import MetaInfoStandard
+from .error_handler import ErrorHandler
+from .metadata_provider import MetadataProvider
+import .resources
 
 minQtVersion = '4.6.0'
 currentPath = os.path.abspath(os.path.dirname(__file__))
 
-class MetatoolsPlugin:
+class MetatoolsPlugin(object):
   def __init__(self, iface):
     self.iface = iface
     self.loadingCanceled = False
 
     try:
-      self.QgisVersion = unicode(QGis.QGIS_VERSION_INT)
+      self.QgisVersion = str(Qgis.QGIS_VERSION_INT)
     except:
-      self.QgisVersion = unicode(QGis.qgisVersion)[0]
+      self.QgisVersion = str(Qgis.qgisVersion)[0]
 
     # get plugin folder (more simple version of original plugin)
     self.pluginPath = currentPath
@@ -252,11 +256,11 @@ class MetatoolsPlugin:
 
   def doEdit(self):
     try:
-      from metatoolseditor import MetatoolsEditor
+      from .metatoolseditor import MetatoolsEditor
     except:
       QMessageBox.critical(self.iface.mainWindow(),
                            QCoreApplication.translate("Metatools", "Metatools"),
-                           QCoreApplication.translate("Metatools", "Editor can't be loaded: %s %s!") % (unicode(sys.exc_info()[0]), unicode(sys.exc_info()[1]))
+                           QCoreApplication.translate("Metatools", "Editor can't be loaded: %s %s!") % (str(sys.exc_info()[0]), str(sys.exc_info()[1]))
                           )
       return
 
@@ -289,11 +293,11 @@ class MetatoolsPlugin:
 
   def doApplyTemplates(self):
     try:
-      from apply_templates_dialog import ApplyTemplatesDialog
+      from .apply_templates_dialog import ApplyTemplatesDialog
     except ImportError:
       QMessageBox.critical(self.iface.mainWindow(),
                            QCoreApplication.translate("Metatools", "Metatools"),
-                           QCoreApplication.translate("Metatools", "Applyer can't be loaded: %s %s!") % (unicode(sys.exc_info()[0]), unicode(sys.exc_info()[1]))
+                           QCoreApplication.translate("Metatools", "Applyer can't be loaded: %s %s!") % (str(sys.exc_info()[0]), str(sys.exc_info()[1]))
                           )
       return
     dlg = ApplyTemplatesDialog(self.iface)
@@ -301,11 +305,11 @@ class MetatoolsPlugin:
 
   def doView(self):
     try:
-      from metatoolsviewer import MetatoolsViewer
+      from .metatoolsviewer import MetatoolsViewer
     except:
       QMessageBox.critical(self.iface.mainWindow(),
                            QCoreApplication.translate("Metatools", "Metatools"),
-                           QCoreApplication.translate("Metatools", "Viewer can't be loaded: %s %s!") % (unicode(sys.exc_info()[0]), unicode(sys.exc_info()[1]))
+                           QCoreApplication.translate("Metatools", "Viewer can't be loaded: %s %s!") % (str(sys.exc_info()[0]), str(sys.exc_info()[1]))
                           )
       return
 
@@ -354,12 +358,12 @@ class MetatoolsPlugin:
                                )
             return False
 
-          profilePath = unicode(QDir.toNativeSeparators(os.path.join(currentPath, "xml_profiles", unicode(profile))))
+          profilePath = str(QDir.toNativeSeparators(os.path.join(currentPath, "xml_profiles", str(profile))))
           self.metaProvider.ImportFromFile(profilePath)
         except:
           QMessageBox.warning(self.iface.mainWindow(),
                               QCoreApplication.translate("Metatools", "Metatools"),
-                              QCoreApplication.translate("Metatools", "Metadata file can't be created: ") + unicode(sys.exc_info()[1])
+                              QCoreApplication.translate("Metatools", "Metadata file can't be created: ") + str(sys.exc_info()[1])
                              )
           return False
         return True
@@ -396,12 +400,12 @@ class MetatoolsPlugin:
       import subprocess
       prov = self.metaProvider
       temporaryMetafile = prov.SaveToTempFile()
-      subprocess.Popen([unicode(execFilePath), unicode(temporaryMetafile)], cwd=toolPath).wait()
+      subprocess.Popen([str(execFilePath), str(temporaryMetafile)], cwd=toolPath).wait()
       prov.LoadFromTempFile(temporaryMetafile)
     except:
       QMessageBox.critical(self.iface.mainWindow(),
                            QCoreApplication.translate("Metatools", "Metatools"),
-                           QCoreApplication.translate("Metatools", "USGS tool can't be runing: ") + unicode(sys.exc_info()[1])
+                           QCoreApplication.translate("Metatools", "USGS tool can't be runing: ") + str(sys.exc_info()[1])
                           )
 
   def execMp(self):
@@ -447,7 +451,7 @@ class MetatoolsPlugin:
     except:
       QMessageBox.critical(self.iface.mainWindow(),
                            QCoreApplication.translate("Metatools", "Metatools"),
-                           QCoreApplication.translate("Metatools", "MP tool can't be runing: ") + unicode(sys.exc_info()[1])
+                           QCoreApplication.translate("Metatools", "MP tool can't be runing: ") + str(sys.exc_info()[1])
                           )
       return
     finally:
@@ -458,7 +462,7 @@ class MetatoolsPlugin:
           os.remove(temporaryMetafile)
 
     # show result
-    from metatoolsviewer import MetatoolsViewer
+    from .metatoolsviewer import MetatoolsViewer
     dlg = MetatoolsViewer()
     dlg.setHtml(result)
     dlg.setWindowTitle(QCoreApplication.translate("Metatools", "MP result"))
@@ -523,7 +527,7 @@ class MetatoolsPlugin:
     if not self.checkMetadata():
       return
 
-    fileName = QFileDialog.getOpenFileName(self.iface.mainWindow(),
+    fileName, __, __ = QFileDialog.getOpenFileName(self.iface.mainWindow(),
                                            QCoreApplication.translate("Metatools", "Select metadata file"),
                                            "",
                                            QCoreApplication.translate("Metatools", 'XML files (*.xml);;Text files (*.txt *.TXT);;All files (*.*)')
@@ -533,11 +537,11 @@ class MetatoolsPlugin:
       return
 
     try:
-      self.metaProvider.ImportFromFile(unicode(fileName))
+      self.metaProvider.ImportFromFile(str(fileName))
     except:
       QMessageBox.critical(self.iface.mainWindow(),
                            QCoreApplication.translate("Metatools", "Metatools"),
-                           QCoreApplication.translate("Metatools", "Metadata can't be imported: ") + unicode(sys.exc_info()[1])
+                           QCoreApplication.translate("Metatools", "Metadata can't be imported: ") + str(sys.exc_info()[1])
                           )
       return
 
@@ -551,7 +555,7 @@ class MetatoolsPlugin:
     if not self.checkMetadata():
       return
 
-    fileName = QFileDialog.getSaveFileName(self.iface.mainWindow(),
+    fileName, __, __ = QFileDialog.getSaveFileName(self.iface.mainWindow(),
                                            QCoreApplication.translate("Metatools", "Save metadata to file"),
                                            "",
                                            QCoreApplication.translate("Metatools", 'XML files (*.xml);;Text files (*.txt *.TXT);;All files (*.*)')
@@ -561,11 +565,11 @@ class MetatoolsPlugin:
       return
 
     try:
-      self.metaProvider.ExportToFile(unicode(fileName))
+      self.metaProvider.ExportToFile(str(fileName))
     except:
       QMessageBox.critical(self.iface.mainWindow(),
                            QCoreApplication.translate("Metatools", "Metatools"),
-                           QCoreApplication.translate("Metatools", "Metadata can't be exported: ") + unicode(sys.exc_info()[1])
+                           QCoreApplication.translate("Metatools", "Metadata can't be exported: ") + str(sys.exc_info()[1])
                           )
       return
 

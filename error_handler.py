@@ -23,7 +23,9 @@
 # MA 02111-1307, USA.
 #
 #******************************************************************************
-from PyQt4.QtXmlPatterns import QAbstractMessageHandler
+from __future__ import absolute_import
+#from PyQt4.QtXmlPatterns import QAbstractMessageHandler
+from PyQt5.QtXmlPatterns import QAbstractMessageHandler
 
 class ErrorHandler(QAbstractMessageHandler):
   def __init__(self, windowTitle):
@@ -39,7 +41,7 @@ class ErrorHandler(QAbstractMessageHandler):
 
   def handleMessage(self, msg_type, desc, identifier, loc):
     #QMessageBox.information(None, "Error", desc + " Ident: " + identifier.toString() + " Line: " + QString(str(loc.line())))
-    from metatoolsviewer import MetatoolsViewer
+    from .metatoolsviewer import MetatoolsViewer
 
     message_type = {0:'Debug', 1:'Warning', 2:'Critical', 3:'Fatal'}
 

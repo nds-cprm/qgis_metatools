@@ -23,7 +23,9 @@
 **
 ***************************************************************************"""
 
-from PyQt4.QtCore import QAbstractItemModel,QModelIndex,QSortFilterProxyModel,Qt,SIGNAL
+from builtins import range
+from builtins import object
+from qgis.PyQt.QtCore import QAbstractItemModel, QModelIndex, Qt
 #from PyQt4.QtGui import 
 from PyQt4.QtXml import QDomNode
 
@@ -33,7 +35,7 @@ def getPath(node):
     path = getPath(node.parentNode()) + " -> "
   return path + node.nodeName()
 
-class DomItem:
+class DomItem(object):
   def __init__(self, node, row, parent = None):
     self.domNode = node
     # record the item's location within its parent.
@@ -56,7 +58,7 @@ class DomItem:
     return self.parentItem
 
   def child(self, i):
-    if self.childItems.has_key(i):
+    if i in self.childItems:
       return self.childItems[i]
 
     if i >= 0 and i < self.domNode.childNodes().count():
@@ -165,7 +167,7 @@ class DomModel(QAbstractItemModel):
       #node = item.node() ?not used never
       item.setItemValue(value)
 
-      self.emit(SIGNAL("dataChanged(const QModelIndex &, const QModelIndex &)"), index, index)
+      self.dataChanged.emit(index, index)
       return True
     return False
 

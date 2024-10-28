@@ -25,10 +25,12 @@
 #
 #******************************************************************************
 
-from PyQt4 import uic
-from PyQt4.QtCore import SIGNAL, Qt, QFile, QIODevice, QSettings, QTextStream, QModelIndex
-from PyQt4.QtGui import QApplication, QDialog, QMessageBox, QDialogButtonBox, QPushButton, QTableWidgetItem
-from PyQt4.QtXml import QDomDocument
+from __future__ import absolute_import
+from builtins import str
+from qgis.PyQt import uic
+from qgis.PyQt.QtCore import Qt, QFile, QIODevice, QSettings, QTextStream, QModelIndex
+from qgis.PyQt.QtWidgets import QApplication, QDialog, QMessageBox, QDialogButtonBox, QPushButton, QTableWidgetItem
+from qgis.PyQt.QtXml import QDomDocument
 
 # from past.builtins import unicode
 # Traceback (most recent call last):
@@ -39,13 +41,13 @@ from PyQt4.QtXml import QDomDocument
 #     from imp import reload
 # ModuleNotFoundError: No module named 'imp'
 # Change imp module to importlib
-from past.builtins import unicode
+from past.builtins import str
 
 # from qgis.core import *
 # from qgis.gui import *
 
 import os, sys
-from dom_model import DomModel, FilterDomModel
+from .dom_model import DomModel, FilterDomModel
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), 'ui/editor.ui'))
 
@@ -70,7 +72,7 @@ class MetatoolsEditor(QDialog, FORM_CLASS):
     #contextmenu
     self.lblNodePath.setContextMenuPolicy(Qt.ActionsContextMenu)
     self.lblNodePath.addAction(self.actionCopyPath)
-    self.connect(self.actionCopyPath, SIGNAL("activated()"), self.slotCopyPath)
+    self.actionCopyPath.activated.connect(self.slotCopyPath)
 
     # full metadata view
     self.treeFull.clicked.connect(self.itemSelected)
@@ -221,13 +223,13 @@ class MetatoolsEditor(QDialog, FORM_CLASS):
 
   def saveMetadata(self):
     try:
-      self.metaProvider.setMetadata(unicode(self.metaXML.toString()))
+      self.metaProvider.setMetadata(str(self.metaXML.toString()))
       # TODO: create preview image if need
       self.btnSave.setEnabled(False)
     except:
       QMessageBox.warning(self,
                           self.tr("Metatools"),
-                          self.tr("Metadata can't be saved:\n") + unicode(sys.exc_info()[0])
+                          self.tr("Metadata can't be saved:\n") + str(sys.exc_info()[0])
                          )
 
   def loadFilter(self):
@@ -269,8 +271,8 @@ class MetatoolsEditor(QDialog, FORM_CLASS):
   def fillTableWidget(self):
       row = 0
       for nameItemIndex, valueItemIndex in self.filteredIndexes:
-          name = unicode(self.model.data(nameItemIndex, Qt.DisplayRole))
-          value = unicode(self.model.data(valueItemIndex, Qt.DisplayRole))
+          name = str(self.model.data(nameItemIndex, Qt.DisplayRole))
+          value = str(self.model.data(valueItemIndex, Qt.DisplayRole))
           self.tbwFiltered.setItem(row, 0, QTableWidgetItem(name))
           self.tbwFiltered.setItem(row, 1, QTableWidgetItem(value))
           row += 1

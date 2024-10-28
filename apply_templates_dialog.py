@@ -25,37 +25,38 @@
 #
 #******************************************************************************
 
-from PyQt4 import uic
-from PyQt4.QtCore import QCoreApplication,QDir,QFile,QSettings,Qt
-from PyQt4.QtGui import QDialog, QPushButton, QDialogButtonBox, QListWidgetItem, QAbstractItemView, QFileDialog, QMessageBox
-from PyQt4.QtXml import QDomDocument
-#from PyQt4.QtXmlPatterns import 
+from __future__ import absolute_import
+from builtins import str
+from qgis.PyQt import uic
+from qgis.PyQt.QtCore import QCoreApplication, QDir, QFile, QSettings, Qt
+from qgis.PyQt.QtWidgets import QDialog, QPushButton, QDialogButtonBox, QListWidgetItem, QAbstractItemView, QFileDialog, QMessageBox
+from qgis.PyQt.QtXml import QDomDocument
 
 #from qgis.core import 
 #from qgis.gui import 
 
-from past.builtins import unicode
+from past.builtins import str
 
 import sys, os, codecs, shutil
 
-from license_editor_dialog import LicenseEditorDialog
-from license_template_manager import LicenseTemplateManager
+from .license_editor_dialog import LicenseEditorDialog
+from .license_template_manager import LicenseTemplateManager
 
-from workflow_editor_dialog import WorkflowEditorDialog
-from workflow_template_manager import WorkflowTemplateManager
+from .workflow_editor_dialog import WorkflowEditorDialog
+from .workflow_template_manager import WorkflowTemplateManager
 
-from organization_editor_dialog import OrganizationEditorDialog
-from organization_template_manager import OrganizationTemplateManager
+from .organization_editor_dialog import OrganizationEditorDialog
+from .organization_template_manager import OrganizationTemplateManager
 
-from datatype_editor_dialog import DataTypeEditorDialog
-from datatype_template_manager import DatatypeTemplateManager
+from .datatype_editor_dialog import DataTypeEditorDialog
+from .datatype_template_manager import DatatypeTemplateManager
 
 import os
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), 'ui/apply_templates.ui'))
 
-from standard import MetaInfoStandard
-from metadata_provider import FileMetadataProvider
-import utils
+from .standard import MetaInfoStandard
+from .metadata_provider import FileMetadataProvider
+from . import utils
 
 currentPath = os.path.abspath(os.path.dirname(__file__))
 
@@ -136,7 +137,7 @@ class ApplyTemplatesDialog(QDialog, FORM_CLASS):
       self.updateLayerList()
 
   def selectExternalFiles(self):
-    files = QFileDialog.getOpenFileNames(self,
+    files, __ = QFileDialog.getOpenFileNames(self,
                                          self.tr("Select files"),
                                          ".",
                                          self.tr("All files (*.*)")
@@ -204,7 +205,7 @@ class ApplyTemplatesDialog(QDialog, FORM_CLASS):
 
   def selectLogFile(self):
     # TODO: need to save last dir and set it in dialog
-    logFileName = QFileDialog.getOpenFileName(self,
+    logFileName, __ = QFileDialog.getOpenFileName(self,
                                               self.tr("Select log file"),
                                               ".",
                                               self.tr("Text files (*.txt);;Log files (*.log);;All files (*)"),
@@ -262,7 +263,7 @@ class ApplyTemplatesDialog(QDialog, FORM_CLASS):
                          )
       return
 
-    profilePath = unicode(QDir.toNativeSeparators(os.path.join(currentPath, "xml_profiles", unicode(profile))))
+    profilePath = str(QDir.toNativeSeparators(os.path.join(currentPath, "xml_profiles", str(profile))))
 
     try:
       for layer in self.layers:
@@ -276,12 +277,12 @@ class ApplyTemplatesDialog(QDialog, FORM_CLASS):
           except:
             QMessageBox.warning(self,
                                 self.tr("Metatools"),
-                                self.tr("Metadata file can't be created: ") + unicode(sys.exc_info()[1])
+                                self.tr("Metadata file can't be created: ") + str(sys.exc_info()[1])
                                )
             continue
 
         # check metadata standard
-        metaprovider = FileMetadataProvider(unicode(layer)) #temporary code
+        metaprovider = FileMetadataProvider(str(layer)) #temporary code
         standard = MetaInfoStandard.tryDetermineStandard(metaprovider)
         if standard != MetaInfoStandard.ISO19115:
           QMessageBox.warning(self,
@@ -289,7 +290,7 @@ class ApplyTemplatesDialog(QDialog, FORM_CLASS):
                               self.tr("File %s has unsupported metadata standard! Only ISO19115 supported now!") % (layer))
           continue
 
-        if os.path.splitext(unicode(layer))[1].lower() not in (".shp", ".mif", ".tab"):
+        if os.path.splitext(str(layer))[1].lower() not in (".shp", ".mif", ".tab"):
             # extract image specific information
             if self.chkUpdateImageInfo.isChecked():
               utils.writeRasterInfo(layer, metaFilePath)
@@ -315,7 +316,7 @@ class ApplyTemplatesDialog(QDialog, FORM_CLASS):
 
         # save metadata file (hmm.. why not QFile?)
         metafile = codecs.open(metaFilePath, "w", encoding="utf-8")
-        metafile.write(unicode(metaXML, "utf-8"))
+        metafile.write(str(metaXML, "utf-8"))
         metafile.close()
 
       QMessageBox.information(self,
@@ -333,7 +334,7 @@ class ApplyTemplatesDialog(QDialog, FORM_CLASS):
     except:
       QMessageBox.warning(self,
                           self.tr("Metatools"),
-                          self.tr("Operation can't be completed: ") + unicode(sys.exc_info()[1])
+                          self.tr("Operation can't be completed: ") + str(sys.exc_info()[1])
                          )
 
   # ----------- Appliers -----------

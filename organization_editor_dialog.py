@@ -25,9 +25,10 @@
 #
 #******************************************************************************
 
-from PyQt4 import uic
+from __future__ import absolute_import
+from qgis.PyQt import uic
 #from PyQt4.QtCore import 
-from PyQt4.QtGui import QDialog,QDialogButtonBox,QMessageBox
+from qgis.PyQt.QtWidgets import QDialog, QDialogButtonBox, QMessageBox
 #from PyQt4.QtXml import 
 #from PyQt4.QtXmlPatterns import 
 
@@ -37,7 +38,7 @@ from PyQt4.QtGui import QDialog,QDialogButtonBox,QMessageBox
 import os
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), 'ui/organization_editor.ui'))
-from organization_template_manager import OrganizationTemplateManager, OrganizationTemplate
+from .organization_template_manager import OrganizationTemplateManager, OrganizationTemplate
 
 currentPath = os.path.abspath(os.path.dirname(__file__))
 

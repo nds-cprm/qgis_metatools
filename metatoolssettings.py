@@ -25,9 +25,9 @@
 #
 #******************************************************************************
 
-from PyQt4 import uic
-from PyQt4.QtCore import QDir,QSettings
-from PyQt4.QtGui import QDialog,QFileDialog
+from qgis.PyQt import uic
+from qgis.PyQt.QtCore import QDir, QSettings
+from qgis.PyQt.QtWidgets import QDialog, QFileDialog
 
 #from qgis.core import 
 #from qgis.gui import 
@@ -102,7 +102,7 @@ class MetatoolsSettings(QDialog, FORM_CLASS):
     self.leErr2HtmlPath.setText(self.settings.value("tools/err2html", ""))
 
   def updateFilter(self):
-    fileName = QFileDialog.getOpenFileName(self,
+    fileName, __ = QFileDialog.getOpenFileName(self,
                                            self.tr('Select filter'),
                                            '.',
                                            self.tr('Text files (*.txt *.TXT)')
@@ -114,7 +114,7 @@ class MetatoolsSettings(QDialog, FORM_CLASS):
     self.leFilterFileName.setText(fileName)
 
   def selectTkme(self):
-    fileName = QFileDialog.getOpenFileName(self,
+    fileName, __ = QFileDialog.getOpenFileName(self,
                                            self.tr('Select file'),
                                            '.',
                                            self.tr('Executable files (*.exe *.EXE);;All files (*)')
@@ -126,7 +126,7 @@ class MetatoolsSettings(QDialog, FORM_CLASS):
     self.leTkmePath.setText(fileName)
 
   def selectMp(self):
-    fileName = QFileDialog.getOpenFileName(self,
+    fileName, __ = QFileDialog.getOpenFileName(self,
                                            self.tr('Select file'),
                                            '.',
                                            self.tr('Executable files (*.exe *.EXE);;All files (*)')
@@ -138,7 +138,7 @@ class MetatoolsSettings(QDialog, FORM_CLASS):
     self.leMpPath.setText(fileName)
 
   def selectErr2Html(self):
-    fileName = QFileDialog.getOpenFileName(self,
+    fileName, __ = QFileDialog.getOpenFileName(self,
                                            self.tr('Select file'),
                                            '.',
                                            self.tr('Executable files (*.exe *.EXE);;All files (*)')

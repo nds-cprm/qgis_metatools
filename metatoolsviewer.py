@@ -25,22 +25,25 @@
 #
 #******************************************************************************
 
-from PyQt4 import uic
-from PyQt4.QtCore import Qt, QMimeData, QFile, QIODevice
-from PyQt4.QtGui import QApplication, QDialog, QMenu, QPrinter, QPrintDialog
+from __future__ import absolute_import
+from builtins import str
+from qgis.PyQt import uic
+from qgis.PyQt.QtCore import Qt, QMimeData, QFile, QIODevice
+from qgis.PyQt.QtWidgets import QApplication, QDialog, QMenu
+from qgis.PyQt.QtPrintSupport import QPrinter, QPrintDialog
 # from PyQt4.QtXml import *
 from PyQt4.QtXmlPatterns  import QXmlQuery
 
 # from qgis.core import *
 # from qgis.gui import *
 
-from past.builtins import unicode
+from past.builtins import str
 
 import os
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(os.path.dirname(__file__), 'ui/viewer.ui'))
 
-from error_handler import ErrorHandler
+from .error_handler import ErrorHandler
 
 class MetatoolsViewer(QDialog, FORM_CLASS):
   def __init__(self, parent=None):
@@ -88,7 +91,7 @@ class MetatoolsViewer(QDialog, FORM_CLASS):
     # load data
     xsltFile = QFile(xsltFilePath)
     xsltFile.open(QIODevice.ReadOnly)
-    xslt = unicode(xsltFile.readAll())
+    xslt = str(xsltFile.readAll())
     xsltFile.close()
 
     src = metaProvider.getMetadata()

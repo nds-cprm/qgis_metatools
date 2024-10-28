@@ -24,12 +24,16 @@
 # MA 02111-1307, USA.
 #
 #******************************************************************************
-from qgis.core import QgsMapLayer, QgsDataSourceURI
-from os import path, tempnam, remove
+from __future__ import print_function
+from builtins import str
+from builtins import object
+from qgis.core import QgsMapLayer, QgsDataSourceUri
+from os import path, remove
+import tempfile
 import codecs
 import uuid
 
-from past.builtins import unicode
+from past.builtins import str
 
 NO_PSYCOPG2 = False
 try:
@@ -38,7 +42,7 @@ except:
   NO_PSYCOPG2 = True
 
 
-class MetadataProvider:
+class MetadataProvider(object):
   tempFilePaths = []
 
   def __del__(self):
@@ -61,10 +65,11 @@ class MetadataProvider:
     raise Exception()
 
   def SaveToTempFile(self):
-    tempPath = tempnam()
+    #with tempfile.TemporaryDirectory() as tempPath: #Correct way
+    #Using without cleanup to make sure it works
+    tempPath = tempfile.TemporaryDirectory()
     # fucked mp and usgs tools!! need xml ext!
     tempPath = tempPath + str(uuid.uuid4()).replace("-", "") + ".xml"
-
     tempMetaFile = codecs.open(tempPath, "w", encoding="utf-8")
     tempMetaFile.write(self.getMetadata())
     tempMetaFile.close()
@@ -103,7 +108,7 @@ class MetadataProvider:
       if layer.providerType() != "gdal":
         return (False, "Only gdal-based raster are supported now!")
       # Only file based rasters are supported now
-      if not path.exists(unicode(layer.source())):
+      if not path.exists(str(layer.source())):
         return (False, "Only file based rasters are supported now!")
 
     #Check vector layers
@@ -147,10 +152,10 @@ class FileMetadataProvider(MetadataProvider):
   META_EXT = '.xml'
 
   def __init__(self, layer):
-    if type(layer) == type(unicode()):
+    if type(layer) == type(str()):
       self.layerFilePath = layer
     else:
-      self.layerFilePath = unicode(layer.source())
+      self.layerFilePath = str(layer.source())
     self.metaFilePath = self.layerFilePath + self.META_EXT
 
   def checkExists(self):
@@ -236,6 +241,7 @@ class PostgresMetadataProvider(RemouteDbMetadataProvider):
       cur.close()
       conn.close()
       return True
-    except psycopg2.DatabaseError, e:
-      print "Exception executing sql: ", e
+    except psycopg2.DatabaseError as e:
+      # fix_print_with_import
+      print("Exception executing sql: ", e)
       return False

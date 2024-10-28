@@ -26,25 +26,27 @@
 #******************************************************************************
 
 #from PyQt4.QtGui import 
-from PyQt4.QtCore import QFile
-from PyQt4.QtXml import QDomDocument
+from builtins import str
+from builtins import object
+from qgis.PyQt.QtCore import QFile
+from qgis.PyQt.QtXml import QDomDocument
 
-from past.builtins import unicode
+from past.builtins import str
 
 import os, codecs
 
-class LicenseTemplateManager:
+class LicenseTemplateManager(object):
   SUBFOLDER = 'templates/license'
   EXT = '.xml'
 
   def __init__(self, basePluginPath):
-    self.basePluginPath = unicode(basePluginPath)
+    self.basePluginPath = str(basePluginPath)
 
   def getTemplatesPath(self):
     return os.path.join(self.basePluginPath, self.SUBFOLDER)
 
   def getTemplateFilePath(self, templateName):
-    return os.path.join(self.getTemplatesPath(), unicode(templateName) + self.EXT)
+    return os.path.join(self.getTemplatesPath(), str(templateName) + self.EXT)
 
   def getTemplateList(self):
     templatesList = []
@@ -99,13 +101,13 @@ class LicenseTemplateManager:
     root.appendChild(element)
 
     templateFile = codecs.open(self.getTemplateFilePath(template.name), "w", encoding="utf-8")
-    templateFile.write(unicode(xmlTemplate.toString()))
+    templateFile.write(str(xmlTemplate.toString()))
     templateFile.close()
 
   def removeTemplate(self, templateName):
     os.remove(self.getTemplateFilePath(templateName))
 
-class LicenseTemplate:
+class LicenseTemplate(object):
   def __init__(self, name = None, version = None, description = None):
     self.name = name
     self.version = version

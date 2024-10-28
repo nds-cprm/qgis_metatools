@@ -26,10 +26,12 @@
 #******************************************************************************
 
 #from PyQt4.QtGui import 
-from PyQt4.QtCore import QFile,QTextStream
-from PyQt4.QtXml import QDomDocument
+from __future__ import print_function
+from builtins import object
+from qgis.PyQt.QtCore import QFile, QTextStream
+from qgis.PyQt.QtXml import QDomDocument
 
-class OrganizationTemplate:
+class OrganizationTemplate(object):
   def __init__(self, name=None, deliveryPoint=None, city=None, adminArea=None, \
                 postalCode=None, country=None, phone=None, fax=None, email=None, \
                 person=None, title=None, position=None, hours=None):
@@ -48,7 +50,7 @@ class OrganizationTemplate:
     self.position = position
     self.hours = hours
 
-class OrganizationTemplateManager:
+class OrganizationTemplateManager(object):
   def __init__(self, fileName):
     self.templatesFile = fileName
     self.organizations = {}
@@ -58,18 +60,21 @@ class OrganizationTemplateManager:
     doc = QDomDocument("metatools_institution")
     f = QFile(self.templatesFile)
     if not f.open(QFile.ReadOnly):
-      print "Couldn't open the templates file:", self.templatesFile
+      # fix_print_with_import
+      print("Couldn't open the templates file:", self.templatesFile)
       return
 
     if not doc.setContent(f):
-      print "Couldn't parse the templates file:", self.templatesFile
+      # fix_print_with_import
+      print("Couldn't parse the templates file:", self.templatesFile)
       return
 
     f.close()
 
     docElem = doc.documentElement()
     if docElem.tagName() != "metatools_institution":
-      print "Incorrect root tag in file:", docElem.tagName()
+      # fix_print_with_import
+      print("Incorrect root tag in file:", docElem.tagName())
       return
 
     # load organizations
@@ -82,7 +87,8 @@ class OrganizationTemplateManager:
           if org != None:
             self.organizations[e.attribute("name")] = org
         else:
-          print "Unknown tag: ", e.tagName()
+          # fix_print_with_import
+          print("Unknown tag: ", e.tagName())
         e = e.nextSiblingElement()
 
   def loadInstitution(self, root):
@@ -125,7 +131,7 @@ class OrganizationTemplateManager:
     doc.appendChild(root)
 
     orgsElem = doc.createElement("institutions")
-    for name, org in self.organizations.iteritems():
+    for name, org in self.organizations.items():
       el = self.saveInstitution(org, doc)
       orgsElem.appendChild(el)
 
@@ -133,7 +139,8 @@ class OrganizationTemplateManager:
 
     f = QFile(self.templatesFile)
     if not f.open(QFile.WriteOnly):
-      print "Couldn't open file for writing:", self.templatesFile
+      # fix_print_with_import
+      print("Couldn't open file for writing:", self.templatesFile)
       return
 
     stream = QTextStream(f)
@@ -212,15 +219,15 @@ class OrganizationTemplateManager:
 
   def addTemplate(self, templateName, template):
     # delete previous template if any
-    if self.organizations.has_key(templateName):
+    if templateName in self.organizations:
       del self.organizations[templateName]
 
     self.organizations[templateName] = template
 
   def removeTemplate(self, templateName):
-    if self.organizations.has_key(templateName):
+    if templateName in self.organizations:
       del self.organizations[templateName]
       self.saveTemplates()
 
   def tempalateNames(self):
-    return self.organizations.keys()
+    return list(self.organizations.keys())
